@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include <unistd.h>
+
+const char *header = "#loadinfo 12345";
 typedef struct Load
 {
    float avg1, avg5, avg15;
@@ -85,22 +87,22 @@ int main(int argc, char *argv[])
          exit(1);
       }
 
-      printf("\n\nHere is the message: %s\n", buffer);
-
+      int res = strcmp(buffer, header);
       /* Write a response to the client */
-
-      char *head = "HTTP/1.0 200 OK\r\n\r\n";
-      char msg[128];
-      memset(msg, 0, sizeof(msg));
-      sprintf(msg, "%s \n[%f,%f,%f,%d,%d]\n", head, l.avg1, l.avg5, l.avg15, l.thread, l.totalthread);
-      n = write(newsockfd, msg, strlen(msg));
-
-      if (n < 0)
+      if (res == 0)
       {
-         perror("ERROR writing to socket");
-         //     exit(1);
+         char msg[128];
+         memset(msg, 0, sizeof(msg));
+         sprintf(msg, "%s[%f,%f,%f,%d,%d]\n", header, l.avg1, l.avg5, l.avg15, l.thread, l.totalthread);
+         n = write(newsockfd, msg, strlen(msg));
+
+         if (n < 0)
+         {
+            perror("ERROR writing to socket");
+            //     exit(1);
+         }
+         close(newsockfd);
       }
-      close(newsockfd);
    }
    close(newsockfd);
    close(sockfd);
