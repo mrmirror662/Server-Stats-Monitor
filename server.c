@@ -9,6 +9,7 @@
 #include <unistd.h>
 
 const char *header = "#loadinfo 12345";
+
 typedef struct Load
 {
    float avg1, avg5, avg15;
@@ -20,7 +21,6 @@ Load getLoadInfo()
    int threads, totalthreads, garbage;
    FILE *f = fopen("/proc/loadavg", "r");
    fscanf(f, "%f %f %f %d/%d %d", &avg1, &avg5, &avg15, &threads, &totalthreads, &garbage);
-   printf("avg load 1 min:%f\navg load 5 min:%f\n avg load 15 min:%f\n thread:%d/%d\n\n", avg1, avg5, avg15, threads, totalthreads);
    Load l;
    l.avg15 = avg15;
    l.avg5 = avg5;
@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
       /* Write a response to the client */
       if (res == 0)
       {
+         printf("\n***load header found***\n");
          char msg[128];
          memset(msg, 0, sizeof(msg));
          sprintf(msg, "%s[%f,%f,%f,%d,%d]\n", header, l.avg1, l.avg5, l.avg15, l.thread, l.totalthread);
@@ -101,7 +102,6 @@ int main(int argc, char *argv[])
             perror("ERROR writing to socket");
             //     exit(1);
          }
-         close(newsockfd);
       }
    }
    close(newsockfd);
