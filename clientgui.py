@@ -1,6 +1,3 @@
-from cProfile import label
-from curses import BUTTON1_DOUBLE_CLICKED
-from decimal import Clamped
 from parse import compile
 import socket
 from tkinter import *
