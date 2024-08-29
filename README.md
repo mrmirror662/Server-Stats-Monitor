@@ -1,5 +1,5 @@
 # Server Monitor
-A server and cliet app to monitor loads on servers
+A server and client app to monitor loads on servers
 # **Getting started with Server Monitor**
 ## **UI**
 ![](https://github.com/mrmirror662/ServerMonitor/blob/main/wiki/c.png)
